@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import Koa from 'koa';
 import authRouter from './auth';
+// import { prisma } from './generated/prisma-client';
 
 dotenv.config();
 

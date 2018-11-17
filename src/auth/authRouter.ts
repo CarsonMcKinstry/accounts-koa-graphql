@@ -1,8 +1,11 @@
+import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { Context, Middleware } from 'koa';
 import Router from 'koa-router';
 import authConfig from './config';
 import passport from './passport';
+
+dotenv.config();
 
 const authRouter = new Router({
   prefix: '/auth',
@@ -51,6 +54,7 @@ const checkForErrors: Middleware = (ctx, next) => {
 };
 
 const strategyCallback = (ctx: Context) => (err: Error | null, profile: any) => {
+
   const encodedRedirectURL = ctx.cookies.get('r');
   const redirectURL = new Buffer(encodedRedirectURL, 'base64').toString('utf-8');
   if (typeof process.env.SIGNATURE !== 'string') {

@@ -1,4 +1,22 @@
+type GithubProfile {
+  # id: ID! @unique
+  avatarUrl: String!
+  bio: String 
+  blog: String
+  company: String
+  email: String!
+  githubId: Int! @unique
+  location: String
+  name: String!
+  profileUrl: String!
+  type: String!
+  username: String!
+}
+
 type User {
+  email: String! @unique
+  githubProfile: GithubProfile
   id: ID! @unique
   name: String!
+  password: String
 }

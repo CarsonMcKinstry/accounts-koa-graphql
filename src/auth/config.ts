@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 import { Strategy } from 'passport';
 import { Strategy as GithubStrategy } from 'passport-github';
 
+import githubHandler from './githubHandler';
+
 dotenv.config();
 
 export interface AuthConfig {
@@ -16,15 +18,6 @@ const {
 
 const authConfig: AuthConfig = {};
 
-const githubStratHandler = (
-  accessToken: string,
-  refreshToken: string,
-  user: any,
-  done: (err: Error | null, profile: any) => void,
-) => {
-  done(null, user);
-};
-
 if (
   typeof GITHUB_CALLBACK_URL === 'string'
   && typeof GITHUB_CLIENT_ID === 'string'
@@ -33,7 +26,8 @@ if (
       callbackURL: GITHUB_CALLBACK_URL,
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
-    }, githubStratHandler);
+      scope: ['openid'],
+    }, githubHandler);
 
     authConfig.github = githubStrategy;
   }

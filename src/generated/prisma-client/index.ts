@@ -10,6 +10,7 @@ type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
+  githubProfile: (where?: GithubProfileWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -32,6 +33,29 @@ export interface Prisma {
    * Queries
    */
 
+  githubProfile: (where: GithubProfileWhereUniqueInput) => GithubProfilePromise;
+  githubProfiles: (
+    args?: {
+      where?: GithubProfileWhereInput;
+      orderBy?: GithubProfileOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<GithubProfile>;
+  githubProfilesConnection: (
+    args?: {
+      where?: GithubProfileWhereInput;
+      orderBy?: GithubProfileOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => GithubProfileConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (
     args?: {
@@ -61,6 +85,32 @@ export interface Prisma {
    * Mutations
    */
 
+  createGithubProfile: (data: GithubProfileCreateInput) => GithubProfilePromise;
+  updateGithubProfile: (
+    args: {
+      data: GithubProfileUpdateInput;
+      where: GithubProfileWhereUniqueInput;
+    }
+  ) => GithubProfilePromise;
+  updateManyGithubProfiles: (
+    args: {
+      data: GithubProfileUpdateManyMutationInput;
+      where?: GithubProfileWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  upsertGithubProfile: (
+    args: {
+      where: GithubProfileWhereUniqueInput;
+      create: GithubProfileCreateInput;
+      update: GithubProfileUpdateInput;
+    }
+  ) => GithubProfilePromise;
+  deleteGithubProfile: (
+    where: GithubProfileWhereUniqueInput
+  ) => GithubProfilePromise;
+  deleteManyGithubProfiles: (
+    where?: GithubProfileWhereInput
+  ) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (
     args: { data: UserUpdateInput; where: UserWhereUniqueInput }
@@ -86,6 +136,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  githubProfile: (
+    where?: GithubProfileSubscriptionWhereInput
+  ) => GithubProfileSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -99,11 +152,45 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type GithubProfileOrderByInput =
+  | "avatarUrl_ASC"
+  | "avatarUrl_DESC"
+  | "bio_ASC"
+  | "bio_DESC"
+  | "blog_ASC"
+  | "blog_DESC"
+  | "company_ASC"
+  | "company_DESC"
+  | "email_ASC"
+  | "email_DESC"
+  | "githubId_ASC"
+  | "githubId_DESC"
+  | "location_ASC"
+  | "location_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "profileUrl_ASC"
+  | "profileUrl_DESC"
+  | "type_ASC"
+  | "type_DESC"
+  | "username_ASC"
+  | "username_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type UserOrderByInput =
+  | "email_ASC"
+  | "email_DESC"
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "password_ASC"
+  | "password_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -111,19 +198,54 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface UserCreateInput {
+export interface GithubProfileUpdateOneInput {
+  create?: GithubProfileCreateInput;
+  update?: GithubProfileUpdateDataInput;
+  upsert?: GithubProfileUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: GithubProfileWhereUniqueInput;
+}
+
+export interface GithubProfileCreateInput {
+  avatarUrl: String;
+  bio?: String;
+  blog?: String;
+  company?: String;
+  email: String;
+  githubId: Int;
+  location?: String;
   name: String;
+  profileUrl: String;
+  type: String;
+  username: String;
 }
 
-export interface UserUpdateInput {
-  name?: String;
+export interface GithubProfileCreateOneInput {
+  create?: GithubProfileCreateInput;
+  connect?: GithubProfileWhereUniqueInput;
 }
 
-export interface UserUpdateManyMutationInput {
-  name?: String;
-}
+export type GithubProfileWhereUniqueInput = AtLeastOne<{
+  githubId: Int;
+}>;
 
 export interface UserWhereInput {
+  email?: String;
+  email_not?: String;
+  email_in?: String[] | String;
+  email_not_in?: String[] | String;
+  email_lt?: String;
+  email_lte?: String;
+  email_gt?: String;
+  email_gte?: String;
+  email_contains?: String;
+  email_not_contains?: String;
+  email_starts_with?: String;
+  email_not_starts_with?: String;
+  email_ends_with?: String;
+  email_not_ends_with?: String;
+  githubProfile?: GithubProfileWhereInput;
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -152,10 +274,267 @@ export interface UserWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
+  password?: String;
+  password_not?: String;
+  password_in?: String[] | String;
+  password_not_in?: String[] | String;
+  password_lt?: String;
+  password_lte?: String;
+  password_gt?: String;
+  password_gte?: String;
+  password_contains?: String;
+  password_not_contains?: String;
+  password_starts_with?: String;
+  password_not_starts_with?: String;
+  password_ends_with?: String;
+  password_not_ends_with?: String;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
 }
+
+export interface GithubProfileSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: GithubProfileWhereInput;
+  AND?:
+    | GithubProfileSubscriptionWhereInput[]
+    | GithubProfileSubscriptionWhereInput;
+  OR?:
+    | GithubProfileSubscriptionWhereInput[]
+    | GithubProfileSubscriptionWhereInput;
+  NOT?:
+    | GithubProfileSubscriptionWhereInput[]
+    | GithubProfileSubscriptionWhereInput;
+}
+
+export interface GithubProfileUpsertNestedInput {
+  update: GithubProfileUpdateDataInput;
+  create: GithubProfileCreateInput;
+}
+
+export interface GithubProfileUpdateInput {
+  avatarUrl?: String;
+  bio?: String;
+  blog?: String;
+  company?: String;
+  email?: String;
+  githubId?: Int;
+  location?: String;
+  name?: String;
+  profileUrl?: String;
+  type?: String;
+  username?: String;
+}
+
+export interface GithubProfileUpdateManyMutationInput {
+  avatarUrl?: String;
+  bio?: String;
+  blog?: String;
+  company?: String;
+  email?: String;
+  githubId?: Int;
+  location?: String;
+  name?: String;
+  profileUrl?: String;
+  type?: String;
+  username?: String;
+}
+
+export interface UserCreateInput {
+  email: String;
+  githubProfile?: GithubProfileCreateOneInput;
+  name: String;
+  password?: String;
+}
+
+export interface GithubProfileWhereInput {
+  avatarUrl?: String;
+  avatarUrl_not?: String;
+  avatarUrl_in?: String[] | String;
+  avatarUrl_not_in?: String[] | String;
+  avatarUrl_lt?: String;
+  avatarUrl_lte?: String;
+  avatarUrl_gt?: String;
+  avatarUrl_gte?: String;
+  avatarUrl_contains?: String;
+  avatarUrl_not_contains?: String;
+  avatarUrl_starts_with?: String;
+  avatarUrl_not_starts_with?: String;
+  avatarUrl_ends_with?: String;
+  avatarUrl_not_ends_with?: String;
+  bio?: String;
+  bio_not?: String;
+  bio_in?: String[] | String;
+  bio_not_in?: String[] | String;
+  bio_lt?: String;
+  bio_lte?: String;
+  bio_gt?: String;
+  bio_gte?: String;
+  bio_contains?: String;
+  bio_not_contains?: String;
+  bio_starts_with?: String;
+  bio_not_starts_with?: String;
+  bio_ends_with?: String;
+  bio_not_ends_with?: String;
+  blog?: String;
+  blog_not?: String;
+  blog_in?: String[] | String;
+  blog_not_in?: String[] | String;
+  blog_lt?: String;
+  blog_lte?: String;
+  blog_gt?: String;
+  blog_gte?: String;
+  blog_contains?: String;
+  blog_not_contains?: String;
+  blog_starts_with?: String;
+  blog_not_starts_with?: String;
+  blog_ends_with?: String;
+  blog_not_ends_with?: String;
+  company?: String;
+  company_not?: String;
+  company_in?: String[] | String;
+  company_not_in?: String[] | String;
+  company_lt?: String;
+  company_lte?: String;
+  company_gt?: String;
+  company_gte?: String;
+  company_contains?: String;
+  company_not_contains?: String;
+  company_starts_with?: String;
+  company_not_starts_with?: String;
+  company_ends_with?: String;
+  company_not_ends_with?: String;
+  email?: String;
+  email_not?: String;
+  email_in?: String[] | String;
+  email_not_in?: String[] | String;
+  email_lt?: String;
+  email_lte?: String;
+  email_gt?: String;
+  email_gte?: String;
+  email_contains?: String;
+  email_not_contains?: String;
+  email_starts_with?: String;
+  email_not_starts_with?: String;
+  email_ends_with?: String;
+  email_not_ends_with?: String;
+  githubId?: Int;
+  githubId_not?: Int;
+  githubId_in?: Int[] | Int;
+  githubId_not_in?: Int[] | Int;
+  githubId_lt?: Int;
+  githubId_lte?: Int;
+  githubId_gt?: Int;
+  githubId_gte?: Int;
+  location?: String;
+  location_not?: String;
+  location_in?: String[] | String;
+  location_not_in?: String[] | String;
+  location_lt?: String;
+  location_lte?: String;
+  location_gt?: String;
+  location_gte?: String;
+  location_contains?: String;
+  location_not_contains?: String;
+  location_starts_with?: String;
+  location_not_starts_with?: String;
+  location_ends_with?: String;
+  location_not_ends_with?: String;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  profileUrl?: String;
+  profileUrl_not?: String;
+  profileUrl_in?: String[] | String;
+  profileUrl_not_in?: String[] | String;
+  profileUrl_lt?: String;
+  profileUrl_lte?: String;
+  profileUrl_gt?: String;
+  profileUrl_gte?: String;
+  profileUrl_contains?: String;
+  profileUrl_not_contains?: String;
+  profileUrl_starts_with?: String;
+  profileUrl_not_starts_with?: String;
+  profileUrl_ends_with?: String;
+  profileUrl_not_ends_with?: String;
+  type?: String;
+  type_not?: String;
+  type_in?: String[] | String;
+  type_not_in?: String[] | String;
+  type_lt?: String;
+  type_lte?: String;
+  type_gt?: String;
+  type_gte?: String;
+  type_contains?: String;
+  type_not_contains?: String;
+  type_starts_with?: String;
+  type_not_starts_with?: String;
+  type_ends_with?: String;
+  type_not_ends_with?: String;
+  username?: String;
+  username_not?: String;
+  username_in?: String[] | String;
+  username_not_in?: String[] | String;
+  username_lt?: String;
+  username_lte?: String;
+  username_gt?: String;
+  username_gte?: String;
+  username_contains?: String;
+  username_not_contains?: String;
+  username_starts_with?: String;
+  username_not_starts_with?: String;
+  username_ends_with?: String;
+  username_not_ends_with?: String;
+  AND?: GithubProfileWhereInput[] | GithubProfileWhereInput;
+  OR?: GithubProfileWhereInput[] | GithubProfileWhereInput;
+  NOT?: GithubProfileWhereInput[] | GithubProfileWhereInput;
+}
+
+export interface GithubProfileUpdateDataInput {
+  avatarUrl?: String;
+  bio?: String;
+  blog?: String;
+  company?: String;
+  email?: String;
+  githubId?: Int;
+  location?: String;
+  name?: String;
+  profileUrl?: String;
+  type?: String;
+  username?: String;
+}
+
+export interface UserUpdateManyMutationInput {
+  email?: String;
+  name?: String;
+  password?: String;
+}
+
+export interface UserUpdateInput {
+  email?: String;
+  githubProfile?: GithubProfileUpdateOneInput;
+  name?: String;
+  password?: String;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  email: String;
+  id?: ID_Input;
+}>;
 
 export interface UserSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
@@ -168,12 +547,51 @@ export interface UserSubscriptionWhereInput {
   NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface GithubProfileEdge {
+  cursor: String;
+}
+
+export interface GithubProfileEdgePromise
+  extends Promise<GithubProfileEdge>,
+    Fragmentable {
+  node: <T = GithubProfilePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface GithubProfileEdgeSubscription
+  extends Promise<AsyncIterator<GithubProfileEdge>>,
+    Fragmentable {
+  node: <T = GithubProfileSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserPreviousValues {
+  email: String;
+  id: ID_Output;
+  name: String;
+  password?: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  email: () => Promise<String>;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  password: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  email: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AggregateUser {
@@ -192,39 +610,27 @@ export interface AggregateUserSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface BatchPayload {
-  count: Long;
+export interface GithubProfileSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
 }
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
+export interface GithubProfileSubscriptionPayloadPromise
+  extends Promise<GithubProfileSubscriptionPayload>,
     Fragmentable {
-  count: () => Promise<Long>;
+  mutation: () => Promise<MutationType>;
+  node: <T = GithubProfilePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = GithubProfilePreviousValuesPromise>() => T;
 }
 
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
+export interface GithubProfileSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<GithubProfileSubscriptionPayload>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface UserPreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = GithubProfileSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = GithubProfilePreviousValuesSubscription>() => T;
 }
 
 export interface UserEdge {
@@ -243,62 +649,68 @@ export interface UserEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface User {
-  id: ID_Output;
+export interface GithubProfilePreviousValues {
+  avatarUrl: String;
+  bio?: String;
+  blog?: String;
+  company?: String;
+  email: String;
+  githubId: Int;
+  location?: String;
   name: String;
+  profileUrl: String;
+  type: String;
+  username: String;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface GithubProfilePreviousValuesPromise
+  extends Promise<GithubProfilePreviousValues>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  avatarUrl: () => Promise<String>;
+  bio: () => Promise<String>;
+  blog: () => Promise<String>;
+  company: () => Promise<String>;
+  email: () => Promise<String>;
+  githubId: () => Promise<Int>;
+  location: () => Promise<String>;
+  name: () => Promise<String>;
+  profileUrl: () => Promise<String>;
+  type: () => Promise<String>;
+  username: () => Promise<String>;
 }
 
-export interface UserConnection {}
+export interface GithubProfilePreviousValuesSubscription
+  extends Promise<AsyncIterator<GithubProfilePreviousValues>>,
+    Fragmentable {
+  avatarUrl: () => Promise<AsyncIterator<String>>;
+  bio: () => Promise<AsyncIterator<String>>;
+  blog: () => Promise<AsyncIterator<String>>;
+  company: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  githubId: () => Promise<AsyncIterator<Int>>;
+  location: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  profileUrl: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
+}
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface GithubProfileConnection {}
+
+export interface GithubProfileConnectionPromise
+  extends Promise<GithubProfileConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<GithubProfileEdge>>() => T;
+  aggregate: <T = AggregateGithubProfilePromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface GithubProfileConnectionSubscription
+  extends Promise<AsyncIterator<GithubProfileConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GithubProfileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGithubProfileSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -324,10 +736,159 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateGithubProfile {
+  count: Int;
+}
+
+export interface AggregateGithubProfilePromise
+  extends Promise<AggregateGithubProfile>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateGithubProfileSubscription
+  extends Promise<AsyncIterator<AggregateGithubProfile>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface GithubProfile {
+  avatarUrl: String;
+  bio?: String;
+  blog?: String;
+  company?: String;
+  email: String;
+  githubId: Int;
+  location?: String;
+  name: String;
+  profileUrl: String;
+  type: String;
+  username: String;
+}
+
+export interface GithubProfilePromise
+  extends Promise<GithubProfile>,
+    Fragmentable {
+  avatarUrl: () => Promise<String>;
+  bio: () => Promise<String>;
+  blog: () => Promise<String>;
+  company: () => Promise<String>;
+  email: () => Promise<String>;
+  githubId: () => Promise<Int>;
+  location: () => Promise<String>;
+  name: () => Promise<String>;
+  profileUrl: () => Promise<String>;
+  type: () => Promise<String>;
+  username: () => Promise<String>;
+}
+
+export interface GithubProfileSubscription
+  extends Promise<AsyncIterator<GithubProfile>>,
+    Fragmentable {
+  avatarUrl: () => Promise<AsyncIterator<String>>;
+  bio: () => Promise<AsyncIterator<String>>;
+  blog: () => Promise<AsyncIterator<String>>;
+  company: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  githubId: () => Promise<AsyncIterator<Int>>;
+  location: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  profileUrl: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
+}
+
+export interface User {
+  email: String;
+  id: ID_Output;
+  name: String;
+  password?: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  email: () => Promise<String>;
+  githubProfile: <T = GithubProfilePromise>() => T;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  password: () => Promise<String>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  email: () => Promise<AsyncIterator<String>>;
+  githubProfile: <T = GithubProfileSubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserConnection {}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+The `Boolean` scalar type represents `true` or `false`.
 */
-export type String = string;
+export type Boolean = boolean;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+*/
+export type Int = number;
 
 export type Long = string;
 
@@ -338,20 +899,19 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
-export type Int = number;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
+export type String = string;
 
 /**
  * Model Metadata
  */
 
 export const models = [
+  {
+    name: "GithubProfile",
+    embedded: false
+  },
   {
     name: "User",
     embedded: false
@@ -366,6 +926,6 @@ export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
   endpoint: `http://localhost:4466`,
-  secret: `<%= PRISMA_SECRET %>`
+  secret: `mysecret123`
 });
 export const prisma = new Prisma();

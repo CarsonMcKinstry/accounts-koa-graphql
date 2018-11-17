@@ -1,6 +1,6 @@
 endpoint: http://localhost:4466
 datamodel: datamodel.graphql
-secret: <%= PRISMA_SECRET %>
+secret: mysecret123
 
 generate:
   - generator: typescript-client
