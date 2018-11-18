@@ -4,6 +4,7 @@ import { Context, Middleware } from 'koa';
 import Router from 'koa-router';
 import authConfig from './config';
 import passport from './passport';
+import { URL, URLSearchParams } from 'url';
 
 dotenv.config();
 
@@ -23,9 +24,12 @@ const confirmStrategyMiddleware: Middleware = (ctx, next) => {
 };
 
 // handle the intial call to a strategy
-
+// there has to be a better way to do this
 const addRedirectCookie: Middleware = (ctx, next) => {
-  const { query: { r } } = ctx;
+  let { query: { r } } = ctx;
+  if (!r.match(/^https?:\/\//)) {
+    r = `http://${r}`;
+  }
   const encodedRedirectURL = new Buffer(r).toString('base64');
   ctx.cookies.set('r', encodedRedirectURL, {
     maxAge: 60 * 60 * 1000,
@@ -54,15 +58,15 @@ const checkForErrors: Middleware = (ctx, next) => {
 };
 
 const strategyCallback = (ctx: Context) => (err: Error | null, profile: any) => {
-
   const encodedRedirectURL = ctx.cookies.get('r');
   const redirectURL = new Buffer(encodedRedirectURL, 'base64').toString('utf-8');
   if (typeof process.env.SIGNATURE !== 'string') {
     throw new Error('SIGNATURE env variable not given');
   } else {
     const userJwt = jwt.sign(profile, process.env.SIGNATURE);
+    const finalRedirect = `${redirectURL}?access_token=${userJwt}`;
 
-    ctx.redirect(`${redirectURL}?access_token=${userJwt}`);
+    ctx.redirect(finalRedirect);
   }
 };
 

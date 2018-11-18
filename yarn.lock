@@ -140,6 +140,13 @@
   resolved "https://registry.yarnpkg.com/@types/keygrip/-/keygrip-1.0.1.tgz#ff540462d2fb4d0a88441ceaf27d287b01c3d878"
   integrity sha1-/1QEYtL7TQqIRBzq8n0oewHD2Hg=
 
+"@types/koa-bodyparser@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/koa-bodyparser/-/koa-bodyparser-5.0.1.tgz#c40c0a0b7903df128a4e0677c51b5bdcc8bfa025"
+  integrity sha512-nL9JGPAHTnFb7zDm9u0bdXEMsbTgCJWcyHJRRPTSCkErzDSyeuSum7IemS697NTpWDwQw+Y9d/CYzvWKlAsMRQ==
+  dependencies:
+    "@types/koa" "*"
+
 "@types/koa-compose@*":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@types/koa-compose/-/koa-compose-3.2.2.tgz#dc106e000bbf92a3ac900f756df47344887ee847"
@@ -172,6 +179,13 @@
     "@types/keygrip" "*"
     "@types/koa-compose" "*"
     "@types/node" "*"
+
+"@types/koa__cors@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@types/koa__cors/-/koa__cors-2.2.3.tgz#227154b4c70439083b33c89627eb780a517cd05b"
+  integrity sha512-RfG2EuSc+nv/E+xbDSLW8KCoeri/3AkqwVPuENfF/DctllRoXhooboO//Sw7yFtkLvj7nG7O1H3JcZmoTQz8nQ==
+  dependencies:
+    "@types/koa" "*"
 
 "@types/lodash@^4.14.118":
   version "4.14.118"
@@ -907,13 +921,13 @@ cliui@^4.0.0:
     strip-ansi "^4.0.0"
     wrap-ansi "^2.0.0"
 
-co-body@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/co-body/-/co-body-2.0.0.tgz#7302abb8e88a2ce084f67ca4f3162c1b54a64b67"
-  integrity sha1-cwKruOiKLOCE9nyk8xYsG1SmS2c=
+co-body@~1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/co-body/-/co-body-1.1.0.tgz#a225e5cbfe7ecf981f74a4a29d30ab0a239144a0"
+  integrity sha1-oiXly/5+z5gfdKSinTCrCiORRKA=
   dependencies:
-    qs "~2.4.1"
-    raw-body "~1.3.4"
+    qs "~2.3.3"
+    raw-body "~1.3.3"
 
 co@^4.6.0:
   version "4.6.0"
@@ -1070,6 +1084,11 @@ copy-paste@^1.3.0:
     iconv-lite "^0.4.8"
   optionalDependencies:
     sync-exec "~0.6.x"
+
+copy-to@~2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/copy-to/-/copy-to-2.0.1.tgz#2680fbb8068a48d08656b6098092bdafc906f4a5"
+  integrity sha1-JoD7uAaKSNCGVrYJgJK9r8kG9KU=
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -2759,12 +2778,13 @@ klaw-sync@^6.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-koa-body-parser@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/koa-body-parser/-/koa-body-parser-1.1.2.tgz#6698bf9cfb33b993f801a8af49a85467c402fc64"
-  integrity sha1-Zpi/nPszuZP4AaivSahUZ8QC/GQ=
+koa-bodyparser@^1.1.2:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/koa-bodyparser/-/koa-bodyparser-1.6.0.tgz#38d39b2fd28a5fcf947fef12ba0d3033ff789f9c"
+  integrity sha1-ONObL9KKX8+Uf+8Sug0wM/94n5w=
   dependencies:
-    co-body "^2.0.0"
+    co-body "~1.1.0"
+    copy-to "~2.0.1"
 
 koa-compose@^3.0.0:
   version "3.2.1"
@@ -4197,10 +4217,10 @@ qs@6.5.2, qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-qs@~2.4.1:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-2.4.2.tgz#f7ce788e5777df0b5010da7f7c4e73ba32470f5a"
-  integrity sha1-9854jld33wtQENp/fE5zujJHD1o=
+qs@~2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-2.3.3.tgz#e9e85adbe75da0bbe4c8e0476a086290f863b404"
+  integrity sha1-6eha2+ddoLvkyOBHaghikPhjtAQ=
 
 range-parser@~1.2.0:
   version "1.2.0"
@@ -4228,7 +4248,7 @@ raw-body@2.3.3:
     iconv-lite "0.4.23"
     unpipe "1.0.0"
 
-raw-body@~1.3.4:
+raw-body@~1.3.3:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/raw-body/-/raw-body-1.3.4.tgz#ccc7ddfc46b72861cdd5bb433c840b70b6f27f54"
   integrity sha1-zMfd/Ea3KGHN1btDPIQLcLbyf1Q=
