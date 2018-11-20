@@ -4,7 +4,6 @@ import { Context, Middleware } from 'koa';
 import Router from 'koa-router';
 import authConfig from './config';
 import passport from './passport';
-import { URL, URLSearchParams } from 'url';
 
 dotenv.config();
 
